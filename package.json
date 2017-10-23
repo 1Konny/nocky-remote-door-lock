@@ -4,6 +4,7 @@
   "description": "$100 business project of university lecture",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +22,8 @@
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "standard": "*"
+    "standard": "*",
+    "@google-cloud/storage": "^1.4.0"
   },
   "dependencies": {
     "express": "^4.16.2"
