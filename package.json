@@ -2,7 +2,7 @@
   "name": "nocky-remote-door-lock",
   "version": "1.0.0",
   "description": "$100 business project of university lecture",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/pelly-ryu/nocky-remote-door-lock/issues"
   },
-  "homepage": "https://github.com/pelly-ryu/nocky-remote-door-lock#readme"
+  "homepage": "https://github.com/pelly-ryu/nocky-remote-door-lock#readme",
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "standard": "*"
+  },
+  "dependencies": {
+    "express": "~4.13.1"
+  }
 }
