@@ -1,0 +1,19 @@
+{
+  "name": "nocky-remote-door-lock",
+  "version": "1.0.0",
+  "description": "$100 business project of university lecture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pelly-ryu/nocky-remote-door-lock.git"
+  },
+  "author": "Pelly Ryu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pelly-ryu/nocky-remote-door-lock/issues"
+  },
+  "homepage": "https://github.com/pelly-ryu/nocky-remote-door-lock#readme"
+}
