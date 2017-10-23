@@ -24,6 +24,6 @@
     "standard": "*"
   },
   "dependencies": {
-    "express": "~4.13.1"
+    "express": "^4.16.2"
   }
 }
