@@ -109,5 +109,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-# Arduino redundancies
-arduino/redundancies/*
+# Client redundancies
+client/redundancies/*
