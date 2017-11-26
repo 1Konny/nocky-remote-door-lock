@@ -1,13 +1,15 @@
 /*
    NOTE :
 
-    in order to upload codes properly,
-    should decouple pin D2 with pin RESET
-
     in order that ESP.deepSleep() works properly,
-    should connect pin D2 to pin RESET
+    should connect pin RESET to GPIO16
+      in the case of Wemos D1, GPIO16 equals to D2
+      for Wemos D1 Mini, it corresponds to D0.
 
-    door open control : https://nocky-183812.appspot.com/set-open
+    in order to upload codes properly,
+    should decouple GPIO16 with pin RESET
+      but in the case of Wemos D1 Mini, seems that this is not an issue. 
+      nonetheless when uploading fails, just pull out short red pin when uploading and push it back when the uploading is done
 
     esp8266 sleep mode reference :
     1. ESP8266 Github : https://github.com/esp8266/Arduino
@@ -15,6 +17,16 @@
 
     when entering into deep sleep mode, current measured to be 4 mA
     for official measurements and details, see : https://github.com/esp8266/Arduino/issues/460
+
+    open door : https://nocky-183812.appspot.com/set-open
+    check door state : https://nocky-183812.appspot.com/open
+    set interval : https://nocky-183812.appspot.com/set-interval?interval=60
+    check interval : https://nocky-183812.appspot.com/interval
+
+   We Have Some Issues :
+
+   1. supplement battery is automatically turned off when knocky enters into "sleep mode" 
+      => seems like "60mA" is the minimum current consumption for the battery to be turned on
 */
 
 #include <ESP8266HTTPClient.h>
@@ -23,8 +35,8 @@
 
 /* Communication */
 #define BAUD 115200
-const char* WiFi_ID = "wonkong";
-const char* WiFi_PW = "23942102";
+const char* WiFi_ID = "WIFI_NAME";
+const char* WiFi_PW = "WIFI_PASSWORD";
 const char* IS_OPEN = "http://nocky-183812.appspot.com/open";
 const char* GET_INTERVAL = "http://nocky-183812.appspot.com/interval";
 uint32_t SLEEP_INTERVAL = 5;
@@ -32,7 +44,7 @@ uint32_t SECONDS = 1000000;
 
 /* Servo */
 Servo LOCK;
-#define SERVO_PIN 0
+#define SERVO_PIN 2 // GPIO2(arduino) <--> D4(wemos d1 mini)
 #define PUSH 10
 #define PULL 170
 
@@ -41,6 +53,15 @@ Servo LOCK;
 
 /* Initialization */
 void setup() {
+//  /* first 'pull' and detach */
+//  LOCK.attach(SERVO_PIN);
+//  delay(10);
+//  LOCK.write(PULL);
+//  delay(200);
+//  LOCK.detach();
+//  delay(50);
+
+  /* set WiFi connection */
   if (VISUALIZE) {
     Serial.begin(BAUD);
     delay(10);
@@ -80,7 +101,7 @@ void loop() {
     }
     ESP.deepSleep(SLEEP_INTERVAL * SECONDS);
   }
-  else{
+  else {
     if (VISUALIZE) Serial.println("no sleep");
   }
 }
@@ -90,7 +111,7 @@ void doorOpen() {
   LOCK.attach(SERVO_PIN);
   delay(10);
   LOCK.write(PULL);
-  delay(2000);
+  delay(1500);
   LOCK.write(PUSH);
   delay(2000);
   LOCK.write(PULL);
@@ -112,11 +133,11 @@ uint32_t check(const char* check_type) {
       if (httpCode > 0) { //Check the returning code
         String payload = http.getString();   //Get the request response payload
         if (payload == "true") {
-          if (VISUALIZE) Serial.println("door open");
+          if (VISUALIZE) Serial.println("door : open");
           doorOpen();
         } //Print the response payload
         else {
-          if (VISUALIZE) Serial.println("door close");
+          if (VISUALIZE) Serial.println("door : close");
         }
         http.end();   //Close connection
         return (uint32_t) 0;
